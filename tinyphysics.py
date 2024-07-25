@@ -136,9 +136,12 @@ class TinyPhysicsSimulator:
     self.current_lataccel_history.append(self.current_lataccel)
 
   def control_step(self, step_idx: int) -> None:
+
     action = self.controller.update(self.target_lataccel_history[step_idx], self.current_lataccel, self.state_history[step_idx], future_plan=self.futureplan)
+    
     if step_idx < CONTROL_START_IDX:
       action = self.data['steer_command'].values[step_idx]
+    
     action = np.clip(action, STEER_RANGE[0], STEER_RANGE[1])
     self.action_history.append(action)
 
@@ -214,6 +217,10 @@ def run_rollout(data_path, controller_type, model_path, debug=False):
   sim = TinyPhysicsSimulator(tinyphysicsmodel, str(data_path), controller=controller, debug=debug)
   return sim.rollout(), sim.target_lataccel_history, sim.current_lataccel_history
 
+def run_rollout_optim(data_path, controller: BaseController, model_path, debug=False):
+  tinyphysicsmodel = TinyPhysicsModel(model_path, debug=debug)
+  sim = TinyPhysicsSimulator(tinyphysicsmodel, str(data_path), controller=controller, debug=debug)
+  return sim.rollout(), sim.target_lataccel_history, sim.current_lataccel_history
 
 if __name__ == "__main__":
   available_controllers = get_available_controllers()
