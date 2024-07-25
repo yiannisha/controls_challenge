@@ -1,7 +1,7 @@
 # Steering Control using Bayesian optimization
 
 ## Usage
-Follow the task's original instructions - just remember to use the `pid_optim` controller.
+Follow the task's original instructions - just remember to use the `pid_optim_base` controller.
 
 ## Methodology
 I used the scripts in the `pid_optimization` directory to explore the solution space for potential
