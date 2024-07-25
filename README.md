@@ -1,3 +1,36 @@
+# Steering Control using Bayesian optimization
+
+## Usage
+Follow the task's original instructions - just remember to use the `pid_optim` controller.
+
+## Methodology
+I used the scripts in the `pid_optimization` directory to explore the solution space for potential
+parameters that would optimize the original PID controller.
+
+I used the given cost functions - implemented in `tinyphysics.py` and a custom rollout function `run_rollout_optim` to get the average cost per route for each solution.
+
+I am using a collection of random routes per iteration based on the batch size.
+
+During "training" I played with different values for the batch size and the bounds for the parameters.
+
+I managed to find the optimal parameters using batch size 4 and the bounds I have set in `pid_optimization/optimize.py`.
+
+You can also find another loss function I played around with. I tried "training" the PID on the data that already had a steer command. I then realized that those steer commands were produced by the originally given PID controller so I stopped.
+
+## Tips for optimizing
+Some optimizing tips based on my experience:
+
+- `n_iter` works best at around 2-3*`init_points`
+- if one locally optimal solution is overfitted then all next solutions will be as well.
+- watch the optimizer run live and periodically run an actual evaluation using the best locally optimal solutions, this will help you understand when the optimizer has actually started overfitting - meaning there's no point in keep going.
+- if the best solution (even if not overfitted) contains parameters that are exactly equal to the upper or lower bound then there's (most probably) some gains to be made if you increase the corresponding boundary.
+- Larger batch size does not equal better convergence - at least for a low number of iterations. I suggest that you always start with a very low number for batch size (i.e. `batch_size=1`) in order to overfit (just like Andrej Karpathy sugggests here[] for training neural nets). Then when trying a larger number (I tried `batch_size=20`) you can get a feeling of wether a lower batch size can be better - none of the experiments I did with `batch_size=20` could outperform the results from `batch_size=1`.
+
+## Next Steps
+I did this experiment trying to reach the best possible results using bayesian optimization in order to use the optimized PID along a trained RNN to even further decrease the total cost.
+
+I am currently working on the RNN part - I will probably push all further updates on this repo so keep it in mind if you want to see the whole system.
+
 # Comma Controls Challenge!
 ![Car](./imgs/car.jpg)
 

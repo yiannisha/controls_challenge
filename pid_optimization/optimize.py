@@ -82,7 +82,7 @@ def optimize_pid_controller():
     optimizer = Optimizer(
         function=loss_function_2,
         pbounds={
-            'p': (-0.1, 0.25),
+            'p': (-0.1, 0.1),
             'i': (-0.2, 0.2),
             'd': (-0.1, 0.1),
         },
