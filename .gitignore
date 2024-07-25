@@ -1,4 +1,6 @@
 __pycache__/
 data/
-report.html
+processed_data/
+processed_data_2/
+processed_data_with_pid/
 models/tinyphysics_*.onnx
