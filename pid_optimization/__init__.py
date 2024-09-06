@@ -1,1 +1,1 @@
-from optimize import optimize_pid_controller
+from optimize import optimize_pid_controller_bayesian
